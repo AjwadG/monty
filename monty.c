@@ -12,6 +12,7 @@ int main(int argc, char **argv)
 	all_t all = {NULL, 0, NULL, NULL, NULL, 0};
 
 	all.inst = malloc(sizeof(instruction_t));
+	all.inst->opcode = NULL;
 
 	all.file_name = argc == 2 ? argv[1] : NULL;
 

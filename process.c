@@ -18,14 +18,50 @@ void process(all_t *all)
 		l = getline(&all->inst->opcode, &size, all->fs);
 		if (l < 0)
 			break;
-		printf("%s --- line %d", all->inst->opcode, all->line);
-		/* handle_comands(all); */
+		handle_commands(all);
 	}
 }
 
+/**
+ * handle_commands - handles the commands.
+ * @all: the all strucut.
+ */
+void handle_commands(all_t *all)
+{
+	char *token = strtok(all->inst->opcode, " \n");
 
-/*void handle_comands(all_t *all)
-*{
-*
-*}
-*/
+	if (!token || strcmp(token, "nop") == 0)
+		return;
+	else if (strcmp(token, "push") == 0)
+		push(all);
+	else if (commands1(token, all) || commands2(token, all))
+		return;
+	else if (strcmp(token, "pall") == 0)
+		pall(all);
+	else
+		handle_err(all, COMMAND);
+}
+
+/**
+ * push - handles the push commands.
+ * @all: the all struct.
+ */
+void push(all_t *all)
+{
+	char *token = strtok(NULL, " \n");
+	int n = atoi(token ? token : "0");
+
+	if (!n && token && token[0] != '0')
+		handle_err(all, PUSH);
+	else
+		push_start(&all->list, n);
+}
+
+/**
+ * pall - handles the pall command.
+ * @all: the all struct.
+ */
+void pall(all_t *all)
+{
+	plist(all->list);
+}
