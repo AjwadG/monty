@@ -7,6 +7,22 @@
 #include <sys/types.h>
 #include <fcntl.h>
 
+#define USAGE 0
+#define OPEN 1
+#define COMMAND 2
+#define PUSH 20
+#define PINT 21
+#define POP 22
+#define SWAP 23
+#define ADD 24
+#define SUB 26
+#define DIV 27
+#define MUL 28
+#define MOD 29
+#define PCHAR 30
+#define PSTR 31
+#define MEMORY 3
+
 /**
  * struct stack_s - doubly linked list representation of a stack (or queue)
  * @n: integer
@@ -62,10 +78,22 @@ typedef struct all_struct
 
 
 
-
+/* validate.c */
 FILE *validate(int argc, all_t *all);
 void handle_err(all_t *all, int errno);
 void free_all(all_t *all);
-void process(all_t *all);
+void free_list(stack_t *head);
 
+/* process.c */
+void process(all_t *all);
+void handle_commands(all_t *all);
+void push(all_t *all);
+void pall(all_t *all);
+
+/* lists.c */
+stack_t *push_start(stack_t **head, const int n);
+stack_t *push_end(stack_t **head, const int n);
+void plist(stack_t *h);
+int get_len(stack_t *h);
+int del_first(stack_t **head);
 #endif
