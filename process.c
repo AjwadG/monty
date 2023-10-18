@@ -39,19 +39,21 @@ void handle_commands(all_t *all)
 		{"mod", mod},
 		{"pop", pop},
 		{"add", add},
+		{"rotl", rotl},
+		{"rotr", rotr},
 		{"sub", sub},
 		{"mul", mul},
 		{"pchar", pchar},
 		{"pstr", pstr},
+		{"stack", mode},
+		{"queue", mode},
 		{NULL, NULL}
 	};
 
-	if (token[0] == '#')
-		return;
 
 	token = strtok(token, " \n");
 
-	if (!token || strcmp(token, "nop") == 0)
+	if (!token || token[0] == '#' || strcmp(token, "nop") == 0)
 		return;
 
 	for (i = 0; commands[i].opcode; i++)
@@ -73,12 +75,28 @@ void handle_commands(all_t *all)
 void push(all_t *all)
 {
 	char *token = strtok(NULL, " \n");
-	int n = atoi(token ? token : "0");
+	int n = atoi(token ? token : "0"), i;
 
-	if (!n && token && token[0] != '0')
+	if (!token)
 		handle_err(all, PUSH);
 	else
-		push_start(&all->list, n);
+	{
+		for (i = 0; token[i] && !n; i++)
+		{
+			if (token[i] != '0' && token[i] != '-')
+				handle_err(all, PUSH);
+		}
+		if (all->stack)
+		{
+			if (!push_start(&all->list, n))
+				handle_err(all, MEMORY);
+		}
+		else
+		{
+			if (!push_end(&all->list, n))
+				handle_err(all, MEMORY);
+		}
+	}
 }
 
 /**

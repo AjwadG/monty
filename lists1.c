@@ -75,8 +75,8 @@ int get_len(stack_t *h)
 {
 	int i;
 
-	for (i = 0; h; i++, h = h->next)
-		;
+	for (i = 0; h; i++)
+		h = h->next;
 	return (i);
 }
 
@@ -90,19 +90,14 @@ int del_first(stack_t **head)
 	stack_t *ptr = *head;
 	int n;
 
-	if (ptr)
-	{
-		n = ptr->n;
-		if (ptr->prev)
-			ptr->prev->next = ptr->next;
-		if (ptr->next)
-			ptr->next->prev = ptr->prev;
-		if (!ptr->prev)
-			*head = ptr->next;
+	n = ptr->n;
+	if (ptr->prev)
+		ptr->prev->next = ptr->next;
+	if (ptr->next)
+		ptr->next->prev = ptr->prev;
+	if (!ptr->prev)
+		*head = ptr->next;
 
-		free(ptr);
-		return (n);
-	}
-	else
-		return (0);
+	free(ptr);
+	return (n);
 }

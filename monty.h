@@ -51,6 +51,7 @@ typedef struct stack_s
  * @list: pointer to the double linked list
  * @opcode: pointer to instruction_s structure
  * @line: line number
+ * @stack: 1 if stack 0 if que
  */
 typedef struct all_struct
 {
@@ -60,6 +61,7 @@ typedef struct all_struct
 	stack_t *list;
 	char *opcode;
 	int line;
+	int stack;
 } all_t;
 
 
@@ -104,11 +106,19 @@ void pop(all_t *all);
 void pchar(all_t *all);
 void pstr(all_t *all);
 
-/* lists.c */
+/* 3-commands.c */
+void rotr(all_t *all);
+void rotl(all_t *all);
+void mode(all_t *all);
+
+/* lists1.c */
 stack_t *push_start(stack_t **head, const int n);
 stack_t *push_end(stack_t **head, const int n);
 void plist(stack_t *h);
 int get_len(stack_t *h);
 int del_first(stack_t **head);
+
+/* lists2.c */
+int del_last(stack_t **head);
 
 #endif	/* _MONTY_H */

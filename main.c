@@ -9,7 +9,7 @@
  */
 int main(int argc, char **argv)
 {
-	all_t all = {NULL, 0, NULL, NULL, NULL, 0};
+	all_t all = {NULL, 0, NULL, NULL, NULL, 0, 1};
 
 	all.file_name = argc == 2 ? argv[1] : NULL;
 

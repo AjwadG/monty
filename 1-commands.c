@@ -6,13 +6,12 @@
  */
 void add(all_t *all)
 {
-	int len = get_len(all->list), n1, n2;
+	int n1;
 
-	if (len < 2)
+	if (get_len(all->list) < 2)
 		handle_err(all, ADD);
 	n1 = del_first(&all->list);
-	n2 = del_first(&all->list);
-	push_start(&all->list, n2 + n1);
+	all->list->n += n1;
 }
 
 /**
@@ -21,13 +20,12 @@ void add(all_t *all)
  */
 void sub(all_t *all)
 {
-	int len = get_len(all->list), n1, n2;
+	int n1;
 
-	if (len < 2)
+	if (get_len(all->list) < 2)
 		handle_err(all, SUB);
 	n1 = del_first(&all->list);
-	n2 = del_first(&all->list);
-	push_start(&all->list, n2 - n1);
+	all->list->n -= n1;
 }
 
 /**
@@ -36,13 +34,12 @@ void sub(all_t *all)
  */
 void mul(all_t *all)
 {
-	int len = get_len(all->list), n1, n2;
+	int n1;
 
-	if (len < 2)
+	if (get_len(all->list) < 2)
 		handle_err(all, MUL);
 	n1 = del_first(&all->list);
-	n2 = del_first(&all->list);
-	push_start(&all->list, n2 * n1);
+	all->list->n *= n1;
 }
 
 /**
@@ -51,18 +48,17 @@ void mul(all_t *all)
  */
 void divi(all_t *all)
 {
-	int len = get_len(all->list), n1, n2;
+	int n1;
 
-	if (len < 2)
+	if (get_len(all->list) < 2)
 		handle_err(all, DIV);
 
 	n1 = del_first(&all->list);
-	n2 = del_first(&all->list);
 
 	if (!n1)
 		handle_err(all, ZERO);
 
-	push_start(&all->list, n2 / n1);
+	all->list->n /= n1;
 }
 
 /**
@@ -72,16 +68,15 @@ void divi(all_t *all)
  */
 void mod(all_t *all)
 {
-	int len = get_len(all->list), n1, n2;
+	int n1;
 
-	if (len < 2)
+	if (get_len(all->list) < 2)
 		handle_err(all, MOD);
 
 	n1 = del_first(&all->list);
-	n2 = del_first(&all->list);
 
 	if (!n1)
 		handle_err(all, ZERO);
 
-	push_start(&all->list, n2 % n1);
+	all->list->n %= n1;
 }

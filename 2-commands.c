@@ -35,8 +35,9 @@ void swap(all_t *all)
  */
 void pop(all_t *all)
 {
-	if (!del_first(&all->list))
+	if (!all->list)
 		handle_err(all, POP);
+	del_first(&all->list);
 }
 
 /**
@@ -45,14 +46,14 @@ void pop(all_t *all)
  */
 void pchar(all_t *all)
 {
-	int len = get_len(all->list), n;
+	int n;
 
-	if (len < 1)
+	if (!all->list)
 		handle_err(all, PCHEMP);
 
 	n = all->list->n;
 
-	if (n > 31 && n < 127)
+	if (n >= 0 && n <= 127)
 		printf("%c\n", n);
 	else
 		handle_err(all, PCHAR);
@@ -71,7 +72,7 @@ void pstr(all_t *all)
 	while (tmp)
 	{
 		n = tmp->n;
-		if (n > 31 && n < 127)
+		if (n > 0 && n <= 127)
 			printf("%c", n);
 		else
 			break;
