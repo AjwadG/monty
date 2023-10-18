@@ -1,4 +1,5 @@
-#include "main.h"
+#include "monty.h"
+#include <stdlib.h>
 
 /**
  * push_start -  adds a new node to the start of list
@@ -87,17 +88,20 @@ int get_len(stack_t *h)
 int del_first(stack_t **head)
 {
 	stack_t *ptr = *head;
+	int n;
 
 	if (ptr)
 	{
+		n = ptr->n;
 		if (ptr->prev)
 			ptr->prev->next = ptr->next;
 		if (ptr->next)
 			ptr->next->prev = ptr->prev;
 		if (!ptr->prev)
 			*head = ptr->next;
+
 		free(ptr);
-		return (1);
+		return (n);
 	}
 	else
 		return (0);

@@ -1,9 +1,10 @@
-#ifndef HEADER_FILE
-#define HEADER_FILE
+#ifndef _MONTY_H
+#define _MONTY_H
+
 #include <stdio.h>
+#include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
-#include <stdlib.h>
 #include <sys/types.h>
 #include <fcntl.h>
 
@@ -20,7 +21,9 @@
 #define MUL 28
 #define MOD 29
 #define PCHAR 30
+#define PCHEMP 301
 #define PSTR 31
+#define ZERO 33
 #define MEMORY 3
 
 /**
@@ -41,6 +44,26 @@ typedef struct stack_s
 
 
 /**
+ * struct all_struct - astruct that have everything in the program
+ * @fs: fils discriptor
+ * @err: error number
+ * @file_name: file name
+ * @list: pointer to the double linked list
+ * @opcode: pointer to instruction_s structure
+ * @line: line number
+ */
+typedef struct all_struct
+{
+	FILE *fs;
+	int err;
+	char *file_name;
+	stack_t *list;
+	char *opcode;
+	int line;
+} all_t;
+
+
+/**
  * struct instruction_s - opcode and its function
  * @opcode: the opcode
  * @f: function to handle the opcode
@@ -51,31 +74,8 @@ typedef struct stack_s
 typedef struct instruction_s
 {
 	char *opcode;
-	void (*f)(stack_t **stack, unsigned int line_number);
+	void (*f)(all_t *all);
 } instruction_t;
-
-
-
-/**
- * struct all_struct - astruct that have everything in the program
- * @fd: fils discriptor
- * @err: error number
- * @file_name: file name
- * @list: pointer to the double linked list
- * @inst: pointer to instruction_s structure
- * @line: line number
- */
-typedef struct all_struct
-{
-	FILE *fs;
-	int err;
-	char *file_name;
-	stack_t *list;
-	instruction_t *inst;
-	int line;
-} all_t;
-
-
 
 
 /* validate.c */
@@ -90,10 +90,25 @@ void handle_commands(all_t *all);
 void push(all_t *all);
 void pall(all_t *all);
 
+/* 1-commands.c */
+void add(all_t *all);
+void sub(all_t *all);
+void mul(all_t *all);
+void divi(all_t *all);
+void mod(all_t *all);
+
+/* 2-commands.c */
+void pint(all_t *all);
+void swap(all_t *all);
+void pop(all_t *all);
+void pchar(all_t *all);
+void pstr(all_t *all);
+
 /* lists.c */
 stack_t *push_start(stack_t **head, const int n);
 stack_t *push_end(stack_t **head, const int n);
 void plist(stack_t *h);
 int get_len(stack_t *h);
 int del_first(stack_t **head);
-#endif
+
+#endif	/* _MONTY_H */

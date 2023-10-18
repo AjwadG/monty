@@ -1,5 +1,5 @@
 #define  _POSIX_C_SOURCE 200809L
-#include "main.h"
+#include "monty.h"
 
 /**
  * process - main program process
@@ -13,9 +13,9 @@ void process(all_t *all)
 	while (++all->line)
 	{
 		size = 0;
-		if (all->inst->opcode)
-			free(all->inst->opcode);
-		l = getline(&all->inst->opcode, &size, all->fs);
+		if (all->opcode)
+			free(all->opcode);
+		l = getline(&all->opcode, &size, all->fs);
 		if (l < 0)
 			break;
 		handle_commands(all);
@@ -28,16 +28,42 @@ void process(all_t *all)
  */
 void handle_commands(all_t *all)
 {
-	char *token = strtok(all->inst->opcode, " \n");
+	int i;
+	char *token = all->opcode;
+	instruction_t commands[] = {
+		{"push", push},
+		{"pall", pall},
+		{"pint", pint},
+		{"swap", swap},
+		{"div", divi},
+		{"mod", mod},
+		{"pop", pop},
+		{"add", add},
+		{"sub", sub},
+		{"mul", mul},
+		{"pchar", pchar},
+		{"pstr", pstr},
+		{NULL, NULL}
+	};
 
-	if (!token)
+	if (token[0] == '#')
 		return;
-	else if (strcmp(token, "push") == 0)
-		push(all);
-	else if (strcmp(token, "pall") == 0)
-		pall(all);
-	else
-		handle_err(all, COMMAND);
+
+	token = strtok(token, " \n");
+
+	if (!token || strcmp(token, "nop") == 0)
+		return;
+
+	for (i = 0; commands[i].opcode; i++)
+	{
+		if (strcmp(token, commands[i].opcode) == 0)
+		{
+			commands[i].f(all);
+			return;
+		}
+	}
+
+	handle_err(all, COMMAND);
 }
 
 /**

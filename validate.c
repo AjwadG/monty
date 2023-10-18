@@ -1,4 +1,4 @@
-#include "main.h"
+#include "monty.h"
 
 /**
  * validtae - cheacks base cases
@@ -19,28 +19,48 @@ FILE *validate(int argc, all_t *all)
 	if (!fs)
 		handle_err(all, OPEN);
 	return (fs);
-
 }
 
 
 /**
  * handle_err - handles errors
- * @all: the all struct.
+ * @a: the all struct.
  * @errno: the error identifier.
  */
-void handle_err(all_t *all, int errno)
+void handle_err(all_t *a, int errno)
 {
 	if (errno == USAGE)
 		fprintf(stderr, "USAGE: monty file\n");
 	else if (errno == OPEN)
-		fprintf(stderr, "Error: Can't open file %s\n", all->file_name);
+		fprintf(stderr, "Error: Can't open file %s\n", a->file_name);
 	else if (errno == COMMAND)
-		fprintf(stderr, "L%d: unknown instruction %s\n", all->line,
-				all->inst->opcode);
+		fprintf(stderr, "L%d: unknown instruction %s\n", a->line, a->opcode);
 	else if (errno == PUSH)
-		fprintf(stderr, "L%d: usage: push integer\n", all->line);
+		fprintf(stderr, "L%d: usage: push integer\n", a->line);
+	else if (errno == PINT)
+		fprintf(stderr, "L%d: can't pint, stack empty\n", a->line);
+	else if (errno == POP)
+		fprintf(stderr, "L%d: usage: can't pop an empty stack\n", a->line);
+	else if (errno == SWAP)
+		fprintf(stderr, "L%d: usage: can't swap, stack too short\n", a->line);
+	else if (errno == ADD)
+		fprintf(stderr, "L%d: usage: can't add, stack too short\n", a->line);
+	else if (errno == SUB)
+		fprintf(stderr, "L%d: usage: can't sub, stack too short\n", a->line);
+	else if (errno == DIV)
+		fprintf(stderr, "L%d: usage: can't div, stack too short\n", a->line);
+	else if (errno == MUL)
+		fprintf(stderr, "L%d: usage: can't mul, stack too short\n", a->line);
+	else if (errno == MOD)
+		fprintf(stderr, "L%d: usage: can't mod, stack too short\n", a->line);
+	else if (errno == ZERO)
+		fprintf(stderr, "L%d: usage: division by zero\n", a->line);
+	else if (errno == PCHAR)
+		fprintf(stderr, "L%d: can't pchar, value out of range\n", a->line);
+	else if (errno == PCHEMP)
+		fprintf(stderr, "L%d: can't pchar, stack empty\n", a->line);
 
-	free_all(all);
+	free_all(a);
 	exit(EXIT_FAILURE);
 }
 
@@ -52,10 +72,9 @@ void free_all(all_t *all)
 {
 	if (all->fs)
 		fclose(all->fs);
-	if (all->inst)
+	if (all->opcode)
 	{
-		free(all->inst->opcode);
-		free(all->inst);
+		free(all->opcode);
 	}
 	if (all->list)
 		free_list(all->list);
