@@ -81,9 +81,9 @@ void push(all_t *all)
 		handle_err(all, PUSH);
 	else
 	{
-		for (i = 0; token[i] && !n; i++)
+		for (i = 0; token[i]; i++)
 		{
-			if (token[i] != '0' && token[i] != '-')
+			if ((token[i] < 48 || token[i] > 57) && token[i] != '-')
 				handle_err(all, PUSH);
 		}
 		if (all->stack)
